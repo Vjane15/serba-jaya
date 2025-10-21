@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perhitungan TOPSIS Mobil</title>
+    <link rel="stylesheet" href="header-footer.css">
+    <link rel="stylesheet" href="SPK.css"> 
+    
+    <style>
+        /* Memastikan font lebar tetap (monospace) agar padding string di JS bekerja sebagai tabel */
+        #topsis-results pre {
+            font-family: 'Consolas', 'Courier New', monospace; 
+            line-height: 1.3; /* Mengatur tinggi baris */
+            white-space: pre; /* Mempertahankan spasi dan baris baru */
+            overflow-x: auto; /* Memungkinkan scroll horizontal jika tabel terlalu lebar */
+            font-size: 13px; /* Ukuran font lebih kecil untuk kerapian */
+            padding: 10px;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+        }
+
+        /* Gaya tambahan untuk card hasil agar terlihat jelas */
+        .topsis-steps-wrapper {
+            display: flex; /* Menggunakan Flexbox untuk tata letak */
+            flex-wrap: wrap; /* Memungkinkan wrapping ke baris baru */
+            gap: 20px; /* Jarak antar card */
+            margin-top: 20px;
+        }
+        .topsis-step-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 15px;
+            flex: 1 1 calc(50% - 20px); /* Mengatur 2 kolom di layar lebar */
+            min-width: 300px;
+        }
+        .topsis-step-card.full-width {
+            flex-basis: 100%; /* Mengatur 1 kolom penuh untuk langkah yang lebih panjang */
+        }
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.jpg" alt="logo">
+        </div>
+        <div class="contact-info">
+            <p>No.Telf: 08122974302</p>
+            <p>Alamat: Pilangsari 18/05, Ngrampal, Sragen</p>
+            <p>Buka: Senin-Sabtu (08.00-17.00)</p>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="SPK.html">Recommendation</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        // INISIALISASI VARIABEL SCROLL UNTUK HEADER
+        let prevScrollPos = window.pageYOffset;
+
+        // FUNGSI UNTUK MENANGANI SCROLL HEADER
+        window.addEventListener('scroll', function () {
+            const currentScrollPos = window.pageYOffset;
+            const header = document.querySelector('header');
+            const nav = document.querySelector('nav');
+
+            // Logika menyembunyikan/menampilkan header dan nav saat scroll
+            if (prevScrollPos > currentScrollPos) {
+                header.style.top = "0"; // Tampilkan header
+                nav.style.top = "70px"; // Sesuaikan posisi navigasi
+            } else {
+                header.style.top = "-100px"; // Sembunyikan header
+                nav.style.top = "0"; // Posisikan navigasi ke atas
+            }
+
+            prevScrollPos = currentScrollPos;
+        });
+    </script>
+
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Pilih Alternatif Merek Mobil</div>
+
+            <form id="topsis-form" onsubmit="event.preventDefault();">
+                <div id="price-filter-container"></div>
+                <hr>
+                <div id="alternatives-form"></div>
+            </form>
+            
+            <div class="button-group">
+                <button onclick="performTopsis()">Hitung TOPSIS</button>
+            </div>
+
+            <div id="topsis-results" style="display: none;">
+                <h3>Hasil Perhitungan TOPSIS</h3>
+                
+                <div class="topsis-steps-wrapper">
+                    
+                    <div class="topsis-step-card full-width">
+                        <h4>Langkah 1: Normalisasi Matriks Keputusan</h4>
+                        <pre id="results-step-1">Matriks Keputusan Awal (X)</pre> 
+                    </div>
+                    
+                    <div class="topsis-step-card full-width">
+                        <h4>Langkah 2: Membobotkan Matriks Normalisasi</h4>
+                        <pre id="results-step-2">Matriks Normalisasi (R) dan Matriks Bobot Normalisasi (V)</pre>
+                    </div>
+                    
+                    <div class="topsis-step-card full-width">
+                        <h4>Langkah 3: Menentukan Solusi Ideal Positif dan Negatif dan Menghitung Jarak ke Solusi Ideal Positif dan Negatif</h4>
+                        <pre id="results-step-3">Solusi Ideal Positif/Negatif (A+/A-) dan Jarak (Di+/Di-)</pre>
+                    </div>
+                    
+                    <div class="topsis-step-card full-width">
+                        <h4>Langkah 4: Menghitung Nilai Preferensi dan Menentukan Alternatif Terbaik</h4>
+                        <pre id="results-step-4">Nilai Preferensi dan Ranking Akhir</pre>  
+                        </div>
+                    
+                    <pre id="results-output" style="width: 100%; color: red; background-color: transparent; border: none;"></pre> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATA MOBIL (Alternatif)
+        const carData = {
+            "Mitsubishi T120ss Pickup (Tahun 1991)": { "Tahun": 2, "Mesin": 3, "Body": 2, "Bak": 1, "Sasis": 2, "Ban": 2, "Harga": 2, "Kenyamanan Setir": 2, "Interior": 2, "BBM": 3, "Warna": 2, "Surat-surat": 1 },
+            "Suzuki Pickup (Tahun 2003)": { "Tahun": 3, "Mesin": 3, "Body": 4, "Bak": 4, "Sasis": 3, "Ban": 2, "Harga": 2, "Kenyamanan Setir": 2, "Interior": 2, "BBM": 3, "Warna": 3, "Surat-surat": 1 },
+            "Mitsubishi L300 (1981)": { "Tahun": 1, "Mesin": 3, "Body": 3, "Bak": 1, "Sasis": 3, "Ban": 2, "Harga": 2, "Kenyamanan Setir": 2, "Interior": 2, "BBM": 1, "Warna": 3, "Surat-surat": 1 },
+            "Suzuki Potongan(2002)": { "Tahun": 3, "Mesin": 3, "Body": 5, "Bak": 5, "Sasis": 3, "Ban": 1, "Harga": 2, "Kenyamanan Setir": 2, "Interior": 2, "BBM": 3, "Warna": 2, "Surat-surat": 1 },
+            "Daihatsu Espass Pickup (Tahun 2000)": { "Tahun": 3, "Mesin": 3, "Body": 5, "Bak": 5, "Sasis": 3, "Ban": 2, "Harga": 1, "Kenyamanan Setir": 2, "Interior": 3, "BBM": 3, "Warna": 3, "Surat-surat": 1 },
+            "Mitsubishi L300 (Tahun 1992)": { "Tahun": 2, "Mesin": 3, "Body": 2, "Bak": 5, "Sasis": 3, "Ban": 2, "Harga": 3, "Kenyamanan Setir": 2, "Interior": 2, "BBM": 1, "Warna": 1, "Surat-surat": 1 },
+            "Suzuki Carry Pickup (Tahun 1986)": { "Tahun": 1, "Mesin": 3, "Body": 5, "Bak": 1, "Sasis": 3, "Ban": 1, "Harga": 1, "Kenyamanan Setir": 2, "Interior": 2, "BBM": 3, "Warna": 1, "Surat-surat": 1 },
+            "Toyota Kijang Pickup (Tahun 1983)": { "Tahun": 1, "Mesin": 3, "Body": 2, "Bak": 4, "Sasis": 3, "Ban": 1, "Harga": 1, "Kenyamanan Setir": 2, "Interior": 3, "BBM": 1, "Warna": 1, "Surat-surat": 1 }
+        };
+
+        // INFORMASI KRITERIA (Tipe dan Bobot)
+        const criteriaInfo = {
+            "Tahun": { type: "benefit", weight: 0.5 }, 
+            "Mesin": { type: "benefit", weight: 0.3 }, 
+            "Body": { type: "benefit", weight: 0.5 }, 
+            "Bak": { type: "benefit", weight: 0.5 }, 
+            "Sasis": { type: "benefit", weight: 0.3 }, 
+            "Ban": { type: "benefit", weight: 0.3 }, 
+            "Harga": { type: "benefit", weight: 0.5 }, 
+            "Kenyamanan Setir": { type: "benefit", weight: 0.3 }, 
+            "Interior": { type: "benefit", weight: 0.3 }, 
+            "BBM": { type: "benefit", weight: 0.3 }, 
+            "Warna": { type: "benefit", weight: 0.3 }, 
+            "Surat-surat": { type: "benefit", weight: 0.2 }
+        };
+        const NUM_ALTERNATIVES = 8; // Jumlah slot pilihan alternatif
+        
+        // Label Harga untuk Filter
+        const priceLabels = {
+            1: "Rp10.000.000,- sampai Rp15.000.000,-",
+            2: "Rp15.500.000,- sampai Rp20.000.000,-",
+            3: "Rp20.500.000,- sampai Rp55.000.000,-",
+            4: "Rp25.500.000,- sampai Rp30.000.000,-",
+            5: "lebih dari Rp30.000.000,-"
+        };
+
+        // FUNGSI MEMBUAT FILTER HARGA
+        function createPriceFilter() {
+            const priceFilterContainer = document.getElementById('price-filter-container');
+            const formGroup = document.createElement('div');
+            formGroup.className = 'form-group';
+
+            const label = document.createElement('label');
+            label.htmlFor = 'price-filter';
+            label.textContent = 'Filter Mobil Berdasarkan Harga';
+            
+            const select = document.createElement('select');
+            select.id = 'price-filter';
+            
+            const allOption = document.createElement('option');
+            allOption.value = 'all';
+            allOption.textContent = 'Tampilkan Semua Harga';
+            select.appendChild(allOption);
+
+            // Mendapatkan nilai harga unik dari data mobil
+            const uniquePrices = [...new Set(Object.values(carData).map(car => car.Harga))].sort((a, b) => a - b);
+            // Membuat opsi dropdown berdasarkan harga unik
+            uniquePrices.forEach(priceValue => {
+                const option = document.createElement('option');
+                option.value = priceValue;
+                option.textContent = priceLabels[priceValue] ? `${priceLabels[priceValue]} (Nilai: ${priceValue})` : `Nilai: ${priceValue}`;
+                select.appendChild(option);
+            });
+
+            // Menambahkan event listener saat filter harga berubah
+            select.addEventListener('change', handlePriceChange);
+
+            formGroup.appendChild(label);
+            formGroup.appendChild(select);
+            priceFilterContainer.appendChild(formGroup);
+        }
+
+        // FUNGSI MENANGANI PERUBAHAN FILTER HARGA
+        function handlePriceChange() {
+            const selectedPrice = document.getElementById('price-filter').value;
+            const allCarBrands = Object.keys(carData);
+            
+            let filteredBrands;
+            
+            // Logika filtering
+            if (selectedPrice === 'all') {
+                filteredBrands = allCarBrands; // Tampilkan semua jika "all" dipilih
+            } else {
+                filteredBrands = allCarBrands.filter(brand => carData[brand].Harga == selectedPrice); // Filter berdasarkan nilai harga
+            }
+            
+            populateAlternativeSelections(filteredBrands); // Isi ulang dropdown alternatif
+        }
+
+        // FUNGSI MENGISI DROPDOWN ALTERNATIF
+        function populateAlternativeSelections(carBrands) {
+            const alternativesFormDiv = document.getElementById('alternatives-form');
+            alternativesFormDiv.innerHTML = ''; // Kosongkan alternatif sebelumnya
+
+            for (let i = 1; i <= NUM_ALTERNATIVES; i++) {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'form-group';
+
+                const label = document.createElement('label');
+                label.htmlFor = `alternative${i}`;
+                label.textContent = `Alternatif ${i}`;
+
+                const select = document.createElement('select');
+                select.id = `alternative${i}`;
+                select.name = `alternative${i}`;
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = carBrands && carBrands.length > 0 ? "Pilih Mobil" : "Tidak ada mobil di harga ini";
+                select.appendChild(defaultOption);
+
+                if (carBrands) {
+                    carBrands.forEach(brand => {
+                        const option = document.createElement('option');
+                        option.value = brand;
+                        option.textContent = brand;
+                        select.appendChild(option);
+                    });
+                }
+
+
+                formGroup.appendChild(label);
+                formGroup.appendChild(select);
+                alternativesFormDiv.appendChild(formGroup);
+            }
+        }
+
+        // EVENT LISTENER KETIKA HALAMAN SELESAI DIMUAT
+        document.addEventListener('DOMContentLoaded', () => {
+            createPriceFilter(); // Buat filter harga
+            populateAlternativeSelections(Object.keys(carData)); // Isi dropdown alternatif awal
+        });
+
+        // FUNGSI UTILITY UNTUK MENGUBAH NAMA MENJADI LINK/FILENAME YANG AMAN
+        function createCarLink(name) {
+            // Mengubah nama menjadi huruf kecil, mengganti spasi/tanda kurung dengan '-'
+            return name.toLowerCase().replace(/[\s\(\)]/g, '-').replace(/--+/g, '-').replace(/^-|-$/g, '');
+        }
+
+        // ==========================================================
+        // FUNGSI UTAMA PERHITUNGAN TOPSIS (DIMODIFIKASI UNTUK OUTPUT TABEL RAPI + LINK)
+        // ==========================================================
+        function performTopsis() {
+            // PENGAMBILAN ELEMEN OUTPUT
+            const resultsOutput = document.getElementById('results-output'); 
+            const resultsStep1 = document.getElementById('results-step-1');
+            const resultsStep2 = document.getElementById('results-step-2');
+            const resultsStep3 = document.getElementById('results-step-3');
+            const resultsStep4 = document.getElementById('results-step-4');
+
+            const topsisResultsDiv = document.getElementById('topsis-results');
+            
+            // Mengosongkan semua output sebelum perhitungan baru
+            resultsOutput.textContent = ''; 
+            resultsStep1.textContent = '';
+            resultsStep2.textContent = '';
+            resultsStep3.textContent = '';
+            resultsStep4.textContent = '';
+
+            let selectedAlternatives = [];
+            // Mengumpulkan alternatif yang dipilih dari dropdown
+            for (let i = 1; i <= NUM_ALTERNATIVES; i++) {
+                const selectElement = document.getElementById(`alternative${i}`);
+                const selectedValue = selectElement.value;
+                if (selectedValue && selectedValue !== "") {
+                    selectedAlternatives.push(selectedValue);
+                }
+            }
+
+            // Validasi (Jika kurang dari 2 alternatif dipilih)
+            if (selectedAlternatives.length < 2) {
+                resultsOutput.textContent = 'Harap pilih minimal 2 merek mobil dari dropdown untuk perhitungan TOPSIS.';
+                topsisResultsDiv.style.display = 'none'; 
+                return;
+            }
+            
+            // Validasi duplikasi (tidak menghentikan, hanya peringatan)
+            const uniqueAlternatives = new Set(selectedAlternatives);
+            if (uniqueAlternatives.size !== selectedAlternatives.length) {
+                resultsOutput.textContent += 'Peringatan: Ada merek mobil yang dipilih lebih dari satu kali.\n\n';
+            }
+            
+            topsisResultsDiv.style.display = 'block'; 
+            const criteria = Object.keys(criteriaInfo);
+
+            // PENGATURAN LEBAR KOLOM UNTUK TABEL RAPAT (Monospace)
+            const ALT_WIDTH = 25;  // Lebar tetap untuk nama Alternatif 
+            const CRIT_WIDTH = 12; // Lebar tetap untuk nilai kriteria (4 desimal + spasi)
+
+            let outputStep1 = '';
+            let outputStep2 = '';
+            let outputStep3 = '';
+            let outputStep4 = '';
+
+            // --- 1. Matriks Keputusan Awal (X) ---
+            let decisionMatrix = [];
+            // Mengisi Matriks Keputusan (nilai kriteria per alternatif)
+            selectedAlternatives.forEach(alt => {
+                let row = [];
+                criteria.forEach(crit => {
+                    row.push(carData[alt][crit]);
+                });
+                decisionMatrix.push(row);
+            });
+
+            // OUTPUT LANGKAH 1
+            outputStep1 += 'Matriks Keputusan Awal (X):\n';
+            
+            // Membuat header kolom (nama kriteria) dengan padding rata kanan
+            const header1 = criteria.map(c => c.substring(0, CRIT_WIDTH - 1).padStart(CRIT_WIDTH)).join('');
+            outputStep1 += 'Alternatif'.padEnd(ALT_WIDTH) + header1 + '\n';
+            outputStep1 += '-'.repeat(ALT_WIDTH) + '-'.repeat(criteria.length * CRIT_WIDTH) + '\n'; // Garis pemisah
+            
+            decisionMatrix.forEach((row, index) => {
+                // Alternatif: Potong dan rata kiri
+                const altName = selectedAlternatives[index].substring(0, ALT_WIDTH).padEnd(ALT_WIDTH);
+                // Nilai: Rata kanan
+                const rowValues = row.map(val => String(val).padStart(CRIT_WIDTH)).join('');
+                outputStep1 += altName + rowValues + '\n';
+            });
+            resultsStep1.textContent = outputStep1;
+
+
+            // --- 2. Normalisasi Matriks Keputusan (R) & 3. Pembobotan (V) ---
+            let normalizedMatrix = [];
+            let squaredSums = new Array(criteria.length).fill(0);
+
+            // Menghitung penyebut normalisasi (akar kuadrat dari jumlah kuadrat)
+            for (let j = 0; j < criteria.length; j++) {
+                for (let i = 0; i < selectedAlternatives.length; i++) {
+                    squaredSums[j] += Math.pow(decisionMatrix[i][j], 2);
+                }
+                squaredSums[j] = Math.sqrt(squaredSums[j]);
+            }
+
+            // Menghitung Matriks Normalisasi (R)
+            for (let i = 0; i < selectedAlternatives.length; i++) {
+                let row = [];
+                for (let j = 0; j < criteria.length; j++) {
+                    // Normalisasi: Xij / Akar_Sum_Kuadrat_j
+                    row.push(squaredSums[j] === 0 ? 0 : decisionMatrix[i][j] / squaredSums[j]);
+                }
+                normalizedMatrix.push(row);
+            }
+            
+            // Menghitung Matriks Bobot Normalisasi (V)
+            let weightedNormalizedMatrix = [];
+            for (let i = 0; i < selectedAlternatives.length; i++) {
+                let row = [];
+                for (let j = 0; j < criteria.length; j++) {
+                    // Pembobotan: Rij * Bobot_j
+                    row.push(normalizedMatrix[i][j] * criteriaInfo[criteria[j]].weight);
+                }
+                weightedNormalizedMatrix.push(row);
+            }
+
+            // OUTPUT Matriks Normalisasi (R)
+            outputStep2 += 'Matriks Normalisasi (R):\n';
+            const headerR = criteria.map(c => c.substring(0, CRIT_WIDTH - 1).padStart(CRIT_WIDTH)).join('');
+            outputStep2 += 'Alternatif'.padEnd(ALT_WIDTH) + headerR + '\n';
+            outputStep2 += '-'.repeat(ALT_WIDTH) + '-'.repeat(criteria.length * CRIT_WIDTH) + '\n';
+            
+            normalizedMatrix.forEach((row, index) => {
+                const altName = selectedAlternatives[index].substring(0, ALT_WIDTH).padEnd(ALT_WIDTH);
+                // Pembulatan 4 desimal dan padding
+                const rowValues = row.map(val => val.toFixed(4).padStart(CRIT_WIDTH)).join('');
+                outputStep2 += altName + rowValues + '\n';
+            });
+            outputStep2 += '\n';
+
+            // OUTPUT Matriks Bobot Normalisasi (V)
+            outputStep2 += 'Matriks Bobot Normalisasi (V):\n';
+            const headerV = criteria.map(c => c.substring(0, CRIT_WIDTH - 1).padStart(CRIT_WIDTH)).join('');
+            outputStep2 += 'Alternatif'.padEnd(ALT_WIDTH) + headerV + '\n';
+            outputStep2 += '-'.repeat(ALT_WIDTH) + '-'.repeat(criteria.length * CRIT_WIDTH) + '\n';
+            
+            weightedNormalizedMatrix.forEach((row, index) => {
+                const altName = selectedAlternatives[index].substring(0, ALT_WIDTH).padEnd(ALT_WIDTH);
+                // Pembulatan 4 desimal dan padding
+                const rowValues = row.map(val => val.toFixed(4).padStart(CRIT_WIDTH)).join('');
+                outputStep2 += altName + rowValues + '\n';
+            });
+            resultsStep2.textContent = outputStep2;
+
+
+            // --- 4 & 5. Solusi Ideal (A+/A-) & Jarak (Di+/Di-) ---
+            let idealPositive = new Array(criteria.length).fill(null); 
+            let idealNegative = new Array(criteria.length).fill(null);
+
+            // Inisialisasi Solusi Ideal
+            if (selectedAlternatives.length > 0) {
+                for (let j = 0; j < criteria.length; j++) {
+                    idealPositive[j] = weightedNormalizedMatrix[0][j];
+                    idealNegative[j] = weightedNormalizedMatrix[0][j];
+                }
+            }
+            
+            // Menentukan nilai Solusi Ideal (A+ dan A-)
+            for (let j = 0; j < criteria.length; j++) {
+                const type = criteriaInfo[criteria[j]].type;
+                for (let i = 0; i < selectedAlternatives.length; i++) {
+                    const value = weightedNormalizedMatrix[i][j];
+                    if (type === "benefit") {
+                        // Benefit: A+ adalah MAX, A- adalah MIN
+                        idealPositive[j] = Math.max(idealPositive[j], value);
+                        idealNegative[j] = Math.min(idealNegative[j], value);
+                    } else { 
+                        // Cost: A+ adalah MIN, A- adalah MAX
+                        idealPositive[j] = Math.min(idealPositive[j], value);
+                        idealNegative[j] = Math.max(idealNegative[j], value);
+                    }
+                }
+            }
+            
+            // OUTPUT Solusi Ideal
+            outputStep3 += 'Solusi Ideal Positif (A+):\n';
+            outputStep3 += criteria.map(c => c.substring(0, CRIT_WIDTH - 1).padStart(CRIT_WIDTH)).join('') + '\n'; // Header Kriteria
+            outputStep3 += idealPositive.map(val => val.toFixed(4).padStart(CRIT_WIDTH)).join('') + '\n\n'; // Nilai A+
+            
+            outputStep3 += 'Solusi Ideal Negatif (A-):\n';
+            outputStep3 += criteria.map(c => c.substring(0, CRIT_WIDTH - 1).padStart(CRIT_WIDTH)).join('') + '\n'; // Header Kriteria
+            outputStep3 += idealNegative.map(val => val.toFixed(4).padStart(CRIT_WIDTH)).join('') + '\n\n'; // Nilai A-
+
+            // Hitung Jarak (Separation)
+            let separationPositive = [];
+            let separationNegative = [];
+
+            for (let i = 0; i < selectedAlternatives.length; i++) {
+                let distPositive = 0;
+                let distNegative = 0;
+                for (let j = 0; j < criteria.length; j++) {
+                    // Jarak Euclidean ke A+
+                    distPositive += Math.pow(weightedNormalizedMatrix[i][j] - idealPositive[j], 2);
+                    // Jarak Euclidean ke A-
+                    distNegative += Math.pow(weightedNormalizedMatrix[i][j] - idealNegative[j], 2);
+                }
+                separationPositive.push(Math.sqrt(distPositive)); // Di+
+                separationNegative.push(Math.sqrt(distNegative)); // Di-
+            }
+
+            // OUTPUT Jarak
+            outputStep3 += 'Jarak ke Solusi Ideal (Di+ dan Di-):\n';
+            // Header kolom jarak
+            outputStep3 += 'Alternatif'.padEnd(ALT_WIDTH) + 'Di+'.padStart(CRIT_WIDTH) + 'Di-'.padStart(CRIT_WIDTH) + '\n';
+            outputStep3 += '-'.repeat(ALT_WIDTH) + '-'.repeat(2 * CRIT_WIDTH) + '\n'; // Garis pemisah
+            
+            separationPositive.forEach((dist, index) => {
+                const altName = selectedAlternatives[index].substring(0, ALT_WIDTH).padEnd(ALT_WIDTH);
+                const distP = dist.toFixed(4).padStart(CRIT_WIDTH);
+                const distN = separationNegative[index].toFixed(4).padStart(CRIT_WIDTH);
+                outputStep3 += `${altName}${distP}${distN}\n`;
+            });
+            resultsStep3.textContent = outputStep3;
+
+
+            // --- 6 & 7. Nilai Preferensi (Ci*) & Ranking ---
+            let relativeCloseness = [];
+            // Hitung Nilai Preferensi (Ci*)
+            for (let i = 0; i < selectedAlternatives.length; i++) {
+                if ((separationPositive[i] + separationNegative[i]) === 0) {
+                    relativeCloseness.push(0);
+                } else {
+                    // Ci* = Di- / (Di- + Di+)
+                    relativeCloseness.push(separationNegative[i] / (separationPositive[i] + separationNegative[i]));
+                }
+            }
+
+            // Buat array untuk Ranking
+            let rankedAlternatives = selectedAlternatives.map((alt, index) => ({
+                name: alt,
+                score: relativeCloseness[index]
+            }));
+
+            // Sorting (Ranking) dari skor tertinggi ke terendah
+            rankedAlternatives.sort((a, b) => b.score - a.score);
+
+            // OUTPUT LANGKAH 4 (Preferensi dan Ranking)
+            const SCORE_WIDTH = 15; // Lebar khusus untuk skor preferensi
+            
+            // Tampilkan Nilai Preferensi (Ci*)
+            outputStep4 += 'Nilai Preferensi (Ci*):\n';
+            outputStep4 += 'Alternatif'.padEnd(ALT_WIDTH) + 'Score'.padStart(SCORE_WIDTH) + '\n';
+            outputStep4 += '-'.repeat(ALT_WIDTH) + '-'.repeat(SCORE_WIDTH) + '\n';
+
+            relativeCloseness.forEach((score, index) => {
+                const altName = selectedAlternatives[index].substring(0, ALT_WIDTH).padEnd(ALT_WIDTH);
+                const scoreValue = score.toFixed(4).padStart(SCORE_WIDTH);
+                outputStep4 += `${altName}${scoreValue}\n`;
+            });
+            outputStep4 += '\n';
+
+            // Tampilkan Ranking
+            outputStep4 += 'Ranking Alternatif (Terbaik ke Terburuk):\n';
+            // Header kolom ranking
+            outputStep4 += 'Rank'.padEnd(5) + 'Alternatif'.padEnd(ALT_WIDTH) + 'Score'.padStart(SCORE_WIDTH) + '\n';
+            outputStep4 += '-'.repeat(5) + '-'.repeat(ALT_WIDTH) + '-'.repeat(SCORE_WIDTH) + '\n';
+            
+            // Tampilkan Hasil Ranking (Hanya teks rata untuk kerapian)
+            rankedAlternatives.forEach((alt, index) => {
+                const rank = String(index + 1) + '.';
+                const rankPadded = rank.padEnd(5);
+                const altName = alt.name.substring(0, ALT_WIDTH).padEnd(ALT_WIDTH);
+                const score = alt.score.toFixed(4).padStart(SCORE_WIDTH);
+                outputStep4 += `${rankPadded}${altName}${score}\n`;
+            });
+            
+            resultsStep4.textContent = outputStep4; // Output PRE yang rapi
+
+
+            // ==========================================================
+            // LOGIKA TAMBAHAN UNTUK LINK MOBIL (DI LUAR <PRE>)
+            // ==========================================================
+            const step4Card = document.getElementById('results-step-4').parentNode;
+            const linkContainerId = 'car-links-container';
+            
+            // Cari atau buat wadah link (div)
+            let linkContainer = document.getElementById(linkContainerId);
+            if (!linkContainer) {
+                linkContainer = document.createElement('div');
+                linkContainer.id = linkContainerId;
+                linkContainer.style.marginTop = '15px';
+                linkContainer.style.borderTop = '1px solid #ddd';
+                linkContainer.style.paddingTop = '10px';
+                step4Card.appendChild(linkContainer); // Tambahkan ke card Langkah 4
+            }
+            linkContainer.innerHTML = '<strong>Lihat Detail Data Mobil:</strong><br>'; // Ganti Header Link (opsional)
+
+            // Membuat link untuk setiap mobil yang direkomendasikan
+            rankedAlternatives.forEach((alt) => {
+                const carUrlName = createCarLink(alt.name); // Konversi nama ke format URL
+                
+                // 1. Membuat elemen link
+                const link = document.createElement('a');
+                
+                // 2. MENAMBAHKAN CLASS CSS UNTUK MENJADIKANNYA TOMBOL
+                link.className = 'button-link'; 
+                
+                link.href = `${carUrlName}.html`; // Mengarahkan ke file HTML mobil
+                link.textContent = alt.name;
+                link.target = "_blank"; // Buka di tab baru
+                
+                linkContainer.appendChild(link);
+            });
+        }
+    </script>
+
+<footer>
+    <h1>SERBA JAYA</h1>
+</footer>
+</body>
+</html>

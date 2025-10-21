@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serba Jaya</title>
+    <link rel="stylesheet" href="car.css">
+    <link rel="stylesheet" href="header-footer.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.jpg" alt="logo">
+        </div>
+        <div class="contact-info">
+            <p>No.Telf: 08122974302</p>
+            <p>Alamat: Pilangsari 18/05, Ngrampal, Sragen</p>
+            <p>Buka: Senin-Sabtu (08.00-17.00)</p>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="SPK.html">Recommendation</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        let prevScrollPos = window.pageYOffset;
+
+    window.addEventListener('scroll', function () {
+        const currentScrollPos = window.pageYOffset;
+        const header = document.querySelector('header');
+        const nav = document.querySelector('nav');
+
+        if (prevScrollPos > currentScrollPos) {
+        // Scroll ke atas → tampilkan header, nav di bawah header
+        header.style.top = "0";
+        nav.style.top = "70px"; // sesuaikan tinggi header
+        } else {
+        // Scroll ke bawah → sembunyikan header, nav menempel di atas layar
+        header.style.top = "-100px";
+        nav.style.top = "0";
+        }
+
+        prevScrollPos = currentScrollPos;
+    });
+    </script>
+    <div class="container">
+      <h1>MOBIL PICKUP MITSUBISHI L300</h1>
+        <main>
+            <div class="gallery">
+                <div class="thumbnail">
+                    <img src="Mitsubishi L300 81/1.jpg" alt="MitsubishiL30081 1">
+                </div>
+                <div class="thumbnail">
+                    <img src="Mitsubishi L300 81/2.jpg" alt="MitsubishiL30081 2">
+                </div>
+                <div class="thumbnail">
+                    <img src="Mitsubishi L300 81/3.jpg" alt="MitsubishiL30081 3">
+                </div>
+            </div>
+
+            <section class="about">
+                <h2>Informasi  :</h2>
+                <div class="about-content"> <div class="left-column">
+                  <p>Tahun 1981</p>
+                  <p>Mesin baik tidak ngebul</p>
+                  <p>Body kropos</p>
+                  <p>Bak sudah dicat total</p>
+                  <p>Sasis utuh belum ada perbaikan</p>
+                  <p>Ban tebal</p>
+                </div>
+                <div class="right-column">
+                  <p>Kenyamanan setir normal</p>
+                  <p>interior biasa</p>
+                  <p>BBM Bensin</p>
+                  <p>Warna mobil hitam</p>
+                  <p>Surat-surat lengkap, mati pajak</p>
+                  <p>Harga Rp15.500.000,-</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <h1>SERBA JAYA</h1>
+    </footer>
+</body>
+</html>

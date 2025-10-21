@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serba Jaya</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="header-footer.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.jpg" alt="logo">
+        </div>
+        <div class="contact-info">
+            <p>No.Telf: 08122974302</p>
+            <p>Alamat: Pilangsari 18/05, Ngrampal, Sragen</p>
+            <p>Buka: Senin-Sabtu (08.00-17.00)</p>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="SPK.html">Recommendation</a></li>
+        </ul>
+    </nav>
+
+    <script>
+    let prevScrollPos = window.pageYOffset;
+
+  window.addEventListener('scroll', function () {
+    const currentScrollPos = window.pageYOffset;
+    const header = document.querySelector('header');
+    const nav = document.querySelector('nav');
+
+    if (prevScrollPos > currentScrollPos) {
+      // Scroll ke atas → tampilkan header, nav di bawah header
+      header.style.top = "0";
+      nav.style.top = "70px"; // sesuaikan tinggi header
+    } else {
+      // Scroll ke bawah → sembunyikan header, nav menempel di atas layar
+      header.style.top = "-100px";
+      nav.style.top = "0";
+    }
+
+    prevScrollPos = currentScrollPos;
+  });
+  </script>
+    
+    <main>
+        <section class="atas">
+            <h1>Mobil Bekas Berkualitas</h1>
+            <p>Showroom mobil bekas terpercaya dengan berbagai pilihan kendaraan berkualitas</p>
+        </section>
+    </main>
+
+    <main>
+        <div class="carlist">
+            <h1>MOBIL TERSEDIA</h1>
+        </div>
+        <div class="line1">
+            <div class="car">
+                <a href="suzuki-potongan-2002.html">
+                    <img src="Suzuki Potongan/3.jpg" alt="Suzuki Potongan">
+                </a>
+                <p>Suzuki Potongan</p>
+                <p>Rp18.500.000,-</p>
+            </div>
+            <div class="car">
+                <a href="suzuki-pickup-tahun-2003.html">
+                    <img src="Suzuki Pickup/1.jpg" alt="Suzuki Pickup ">
+                </a>
+                <p>Suzuki Pickup</p>
+                <p>Rp17.000.000,-</p>
+            </div>
+            <div class="car">
+                <a href="daihatsu-espass-pickup-tahun-2000.html">
+                    <img src="Daihatsu Espass Pickup/1.jpg" alt="Daihatsu Espass Pickup ">
+                </a>
+                <p>Daihatsu Espass</p>
+                <p>Rp15.000.000,-</p>
+            </div>
+            <div class="car">
+                <a href="mitsubishi-l300-1981.html">
+                    <img src="Mitsubishi L300 81/1.jpg" alt="Mitsubishi L300 ">
+                </a>
+                <p>Mitsubishi L300</p>
+                <p>Rp15.500.000,-</p>
+            </div>
+        </div>
+        <div class="line2">
+            <div class="car">
+                <a href="suzuki-carry-pickup-tahun-1986.html">
+                    <img src="Suzuki Carry/3.jpg" alt="Suzuki Carry">
+                </a>
+                <p>Suzuki Carry</p>
+                <p>Rp13.500.000,-</p>
+            </div>
+            <div class="car">
+                <a href="mitsubishi-l300-tahun-1992.html">
+                    <img src="Mitsubishi L300/2.jpg" alt="Mitsubishi L300">
+                </a>
+                <p>Mitsubishi L300</p>
+                <p>Rp22.000.000,-</p>
+            </div>
+            <div class="car">
+                <a href="toyota-kijang-pickup-tahun-1983.html">
+                    <img src="Toyota Kijang Pu/2.jpg" alt="Toyota Kijang Pickup ">
+                </a>
+                <p>Toyota Kijang Pickup</p>
+                <p>Rp11.500.000,-</p>
+            </div>
+            <div class="car">
+                <a href="mitsubishi-t120ss-pickup-tahun-1991.html">
+                    <img src="Mitsubishi T120ss/2.jpg" alt="Mitsubishi T120ss">
+                </a>
+                <p>Mitsubishi T120ss</p>
+                <p>Rp17.000.000,-</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <h1>SERBA JAYA</h1>
+    </footer>
+</body>
+</html>

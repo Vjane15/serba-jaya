@@ -1,0 +1,121 @@
+/* Reset gaya default dan pengaturan global */
+* {
+    padding: 0; /* Hapus padding default agar tidak ada jarak ekstra */
+    margin: 0; /* Hapus margin default agar tidak ada celah */
+    box-sizing: border-box; /* Pastikan ukuran elemen mempertimbangkan padding dan border */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Gunakan font yang nyaman untuk dibaca */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding-top: calc(70px + 40px); /* header 70px + nav 50px */
+}
+
+/* Styling untuk kontainer utama halaman */
+.container {
+    max-width: 960px; /* Lebar maksimum kontainer */
+    margin: 20px auto; /* Margin atas/bawah 20px, otomatis di tengah horizontal */
+    background-color: #fff; /* Warna latar belakang putih */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Efek bayangan lembut */
+    border-radius: 8px; /* Sudut membulat */
+    overflow: hidden; /* Mengatasi konten yang meluap */
+    padding: 20px;
+    text-align: center;
+    color: #040143;
+}
+
+/* Gaya untuk judul utama halaman (misalnya Telaga Biru Cicerem) */
+.h1 {
+    font-size: 36px; /* Ukuran font judul */
+    margin: 10px 0; /* Margin atas dan bawah 10px, kiri dan kanan 0 */
+    text-align: center; /* Teks rata tengah */
+    color: #040143; /* Warna teks judul */
+}
+
+/* Gaya untuk galeri gambar (kumpulan thumbnail) */
+.gallery {
+    display: flex; /* Menggunakan Flexbox untuk tata letak item */
+    justify-content: space-around; /* Menyebar item dengan ruang di antaranya */
+    padding: 10px 0; /* Padding atas dan bawah 10px */
+    height: auto; /* Tinggi otomatis menyesuaikan konten */
+    background-color: #ffffff; /* Warna latar belakang galeri */
+    gap: 15px; /* Berikan jarak antar mobil */
+}
+
+/* Gaya untuk setiap item thumbnail individual di dalam galeri */
+.thumbnail {
+    flex: 1; /* Setiap thumbnail akan mengambil bagian yang sama dari ruang yang tersedia */
+    margin: 0 5px; /* Margin kiri dan kanan 5px */
+    overflow: hidden; /* Mengatasi konten yang meluap */
+    border-radius: 5px; /* Sudut membulat untuk thumbnail */
+}
+
+/* Gaya untuk gambar di dalam thumbnail */
+.thumbnail img {
+    width: 100%; /* Lebar gambar mengisi penuh parent thumbnail */
+    height: 400px; /* Tinggi tetap untuk gambar thumbnail */
+    display: block; /* Mengatur gambar sebagai elemen blok */
+    object-fit: cover; /* Memastikan gambar mengisi area tanpa distorsi, memotong jika perlu */
+    transition: transform 0.3s ease; /* Transisi halus untuk efek hover */
+}
+
+/* Efek saat kursor mengarah ke gambar thumbnail */
+.thumbnail img:hover {
+    transform: scale(1.05); /* Memperbesar gambar sedikit saat di-hover */
+}
+
+/* Gaya untuk bagian "Tentang" (deskripsi) */
+.about {
+    padding: 20px; /* Padding di semua sisi */
+    background-color: #fff; /* Warna latar belakang putih */
+    border-top: 1px solid #eee; /* Garis tipis di bagian atas */
+}
+
+/* Gaya untuk sub-judul di bagian "Tentang" */
+.about h2 {
+    font-size: 1.8em; /* Ukuran font sub-judul */
+    color: #040143; /* Warna teks sub-judul */
+    margin-bottom: 15px; /* Margin bawah 15px */
+}
+
+/* Gaya untuk kontainer teks dua kolom di dalam "Informasi" */
+.about-content {
+    display: flex; /* Menggunakan Flexbox untuk tata letak kolom */
+    gap: 20px; /* Jarak antar kolom */
+    flex-wrap: wrap; /* Memungkinkan kolom untuk membungkus ke baris baru pada layar kecil */
+    justify-content: space-around; /* Menyesuaikan penempatan kolom jika ada ruang ekstra */
+}
+
+/* Gaya untuk setiap kolom teks */
+.left-column,
+.right-column {
+    flex: 1; /* Setiap kolom akan mengambil ruang yang sama */
+    min-width: 250px; /* Lebar minimum agar tidak terlalu sempit di layar kecil */
+    /* text-align: left; Ini adalah default untuk teks, jadi tidak perlu eksplisit jika teks rata kiri */
+}
+
+/* Gaya untuk paragraf di bagian "Tentang" */
+.about p {
+    margin-bottom: 10px; /* Margin bawah 10px */
+    text-align: justify; /* Teks rata kanan kiri */
+    font-size: 20px; /* Mengatur ukuran font menjadi 16 piksel */
+    color: #333;
+}
+
+/* Media Queries untuk responsivitas (layout di perangkat kecil) */
+@media (max-width: 768px) {
+    /* Saat lebar layar kurang dari atau sama dengan 768px */
+    .gallery {
+        flex-direction: column; /* Mengubah tata letak galeri menjadi vertikal */
+        align-items: center; /* Memusatkan item secara horizontal */
+    }
+    .thumbnail {
+        width: 90%; /* Lebar thumbnail menjadi 90% dari parent */
+        margin-bottom: 10px; /* Margin bawah 10px antar thumbnail */
+    }
+}

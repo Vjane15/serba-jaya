@@ -1,0 +1,100 @@
+/* Reset gaya default dan pengaturan global */
+* {
+    padding: 0; /* Hapus padding default agar tidak ada jarak ekstra */
+    margin: 0; /* Hapus margin default agar tidak ada celah */
+    box-sizing: border-box; /* Pastikan ukuran elemen mempertimbangkan padding dan border */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Gunakan font yang nyaman untuk dibaca */
+}
+
+/* Pastikan seluruh halaman tidak memiliki celah */
+body {
+    width: 100vw; /* Memastikan halaman memenuhi lebar penuh */
+    min-height: 100vh; /* Memastikan tinggi sesuai viewport */
+    background: #f5f7fa; /* Warna latar belakang halaman */
+    color: #333; /* Warna teks utama */
+    padding: 20px;
+    display: flex; /* Menggunakan flexbox untuk tata letak */
+    flex-direction: column; /* Susun elemen dalam bentuk kolom */
+    align-items: center; /* Pusatkan elemen secara horizontal */
+}
+
+/* Bagian atas halaman dengan gambar latar */
+.atas {
+    display: flex; /* Menggunakan flexbox */
+    flex-direction: column; /* Susun elemen secara vertikal */
+    justify-content: center; /* Pusatkan elemen secara vertikal */
+    align-items: center; /* Pusatkan elemen secara horizontal */
+    width: 100vw; /* Pastikan background menempel ke kanan dan kiri */
+    min-height: 100vh; /* Pastikan tinggi sesuai viewport */
+    background-image: url("bg halaman utama atas.jpg"); /* Menetapkan gambar latar */
+    background-size: cover; /* Gambar memenuhi area tanpa distorsi */
+    background-repeat: no-repeat; /* Hindari pengulangan gambar */
+    background-position: center; /* Pusatkan gambar latar */
+    color: white; /* Warna teks agar terlihat jelas */
+    text-align: center; /* Pusatkan teks */
+}
+
+/* Gaya untuk judul utama */
+.atas h1 {
+    font-size: 36px; /* Ukuran font judul */
+    margin: 10px 0; /* Hapus margin ekstra */
+}
+
+/* Gaya untuk paragraf utama */
+.atas p {
+    font-size: 18px; /* Ukuran font paragraf */
+    margin: 10px 0; /* Hapus margin ekstra */
+}
+
+/* Bagian utama halaman */
+main {
+    flex-grow: 1; /* Memastikan konten utama mengisi ruang yang tersisa */
+    width: 100vw; /* Pastikan konten memenuhi seluruh lebar layar */
+    background-color: #d3d3d3; /* Warna latar belakang abu-abu */
+}
+
+/* Gaya untuk judul daftar mobil */
+.carlist h1 {
+    padding-top: 20px; /* Tambahkan jarak atas */
+    text-align: center; /* Pusatkan teks */
+    font-size: 36px; /* Ukuran font untuk judul */
+    color: #333; /* Warna teks lebih gelap */
+    margin-bottom: 20px; /* Beri jarak bawah */
+}
+
+/* Barisan mobil */
+.line1, .line2 {
+    display: flex; /* Gunakan flexbox */
+    justify-content: center; /* Pusatkan elemen */
+    gap: 30px; /* Berikan jarak antar mobil */
+    padding: 20px; /* Tambahkan ruang di sekitar */
+}
+
+/* Gaya untuk mobil */
+.car {
+    background-color: white; /* Gunakan latar belakang putih */
+    border: 1px solid #ccc; /* Tambahkan garis batas */
+    border-radius: 8px; /* Sudut melengkung */
+    padding: 10px; /* Tambahkan ruang dalam */
+    width: 200px; /* Tetapkan lebar */
+    text-align: center; /* Pusatkan teks */
+}
+
+/* Gaya untuk gambar mobil */
+.car img {
+    width: 100%; /* Gambar memenuhi kotak mobil */
+    height: auto; /* Biarkan tinggi menyesuaikan */
+    border-radius: 5px; /* Sudut gambar melengkung */
+    cursor: pointer; /* Tambahkan efek kursor saat gambar diklik */
+}
+
+/* Gaya untuk teks mobil */
+.car p {
+    margin: 10px 0 0; /* Tambahkan sedikit ruang di atas */
+    font-size: 16px; /* Ukuran teks */
+    color: #333; /* Warna teks */
+    background-color: #78a7cd; /* Warna latar belakang untuk teks */
+    padding: 5px 10px; /* Tambahkan ruang dalam teks */
+    border-radius: 5px; /* Buat sudut teks melengkung */
+    text-align: center; /* Pastikan teks berada di tengah */
+}

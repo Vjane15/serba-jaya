@@ -1,0 +1,147 @@
+/* Reset dan pengaturan dasar */
+* {
+  margin: 0; /* Menghilangkan margin default semua elemen */
+  padding: 0; /* Menghilangkan padding default semua elemen */
+  box-sizing: border-box; /* Agar lebar/tinggi elemen menghitung border dan padding */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font default untuk seluruh halaman */
+}
+
+/* Aturan untuk elemen <body> */
+body {
+  margin: 0; /* Hindari margin default browser */
+  font-family: Arial, sans-serif; /* Font fallback untuk teks */
+  background: #f5f7fa; /* Warna latar belakang halaman */
+  color: #333; /* Warna teks utama */
+  min-height: 100vh; /* Pastikan body minimal setinggi viewport */
+  display: flex; /* Gunakan flexbox agar layout fleksibel */
+  flex-direction: column; /* Susun elemen secara vertikal */
+  align-items: center; /* Pusatkan konten secara horizontal */
+  padding-top: calc(70px + 40px); /* Jarak dari atas untuk menghindari tertutup header & nav */
+  padding-bottom: 40px; /* Memberi jarak 20px dari konten ke bagian bawah elemen */
+}
+
+/* Kontainer utama yang menampung card */
+.container {
+  flex-grow: 0; /* Jangan biarkan container mengambil ruang ekstra */
+  display: flex; /* Flexbox untuk posisikan card */
+  justify-content: center; /* Pusatkan secara horizontal */
+  align-items: center; /* Pusatkan secara vertikal */
+  width: 100%; /* Membuat container selebar mungkin mengikuti parent */
+}
+
+/* Kartu utama yang menampilkan form */
+.card {
+  background-color: #fff; /* Warna latar kartu putih */
+  padding: 30px; /* Ruang dalam kartu */
+  border-radius: 8px; /* Sudut membulat */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Bayangan lembut */
+  width: 100%; /* Penuh lebar container */
+  max-width: 800px; /* Batas maksimal lebar kartu */
+}
+
+/* Header dalam card (judul section) */
+.card-header {
+  background-color: #040143; /* Warna latar ungu tua */
+  color: #fff; /* Teks putih */
+  padding: 15px 20px; /* Padding internal */
+  border-radius: 8px 8px 0 0; /* Rounded hanya bagian atas */
+  margin: -30px -30px 20px -30px; /* Offset agar header menyatu ke tepi card */
+  font-size: 20px; /* Ukuran font judul */
+  text-align: center; /* Pusatkan judul */
+}
+
+/* Grup input dalam form */
+.form-group {
+  display: flex; /* Layout horizontal */
+  align-items: center; /* Vertikal sejajar */
+  margin-bottom: 15px; /* Spasi antar grup */
+}
+
+/* Label tiap input */
+.form-group label {
+  flex: 1; /* Ambil 1 bagian dari 3 (1:2 rasio dengan select) */
+  margin-right: 15px; /* Jarak kanan label */
+  font-weight: bold; /* Teks label ditebalkan */
+}
+
+/* Drop-down / select */
+.form-group select {
+  flex: 2; /* Ambil 2 bagian dari 3 */
+  padding: 10px; /* Padding dalam select */
+  border: 1px solid #ddd; /* Border abu muda */
+  border-radius: 4px; /* Sudut membulat */
+  font-size: 16px; /* Ukuran font */
+}
+
+/* Grup tombol di bawah form */
+.button-group {
+  text-align: center; /* Pusatkan tombol */
+  margin-top: 30px; /* Jarak atas */
+}
+
+/* Tampilan tombol simpan */
+.button-group button {
+  background-color: #040143; /* Warna latar tombol */
+  color: #fff; /* Warna teks tombol */
+  padding: 12px 25px; /* Ukuran tombol */
+  border: none; /* Tanpa garis tepi */
+  border-radius: 5px; /* Sudut membulat */
+  cursor: pointer; /* Tunjukkan cursor pointer saat hover */
+  font-size: 16px; /* Ukuran font */
+  transition: background-color 0.3s ease; /* Animasi saat hover */
+}
+
+/* Hover state tombol */
+.button-group button:hover {
+  background-color: #040143; /* Warna gelap saat di-hover */
+}
+
+/* Bagian hasil perhitungan TOPSIS */
+#topsis-results {
+  margin-top: 30px; /* Jarak dari tombol */
+  border-top: 1px solid #eee; /* Garis pemisah atas */
+  padding-top: 20px; /* Padding atas konten hasil */
+}
+
+/* Judul hasil */
+#topsis-results h3 {
+  text-align: center; /* Pusatkan judul */
+  color: #040143; /* Warna ungu */
+  margin-bottom: 15px; /* Jarak bawah judul */
+}
+
+/* Format tampilan hasil berbentuk <pre> */
+#topsis-results pre {
+  background-color: #f8f8f8; /* Latar abu terang */
+  padding: 15px; /* Ruang dalam */
+  border-radius: 5px; /* Sudut membulat */
+  overflow-x: auto; /* Scroll horizontal jika konten panjang */
+  white-space: pre-wrap; /* Bungkus baris jika panjang */
+  word-wrap: break-word; /* Hindari overflow kata */
+}
+
+#topsis-results pre {
+    font-family: 'Consolas', 'Courier New', monospace; 
+    line-height: 1.3;
+    white-space: pre; 
+    overflow-x: auto;
+    font-size: 13px; /* Ukuran font lebih kecil untuk kerapian */
+}
+
+.button-link {
+    display: block; /* Memastikan setiap tombol berada di baris baru */
+    text-decoration: none; /* Menghilangkan garis bawah link */
+    padding: 8px 15px; /* Padding di dalam tombol */
+    margin-bottom: 8px; /* Jarak antar tombol */
+    border-radius: 5px; /* Sudut tombol melengkung */
+    background-color: #040143; /* Warna latar belakang biru */
+    color: white !important; /* Warna teks putih */
+    text-align: center; /* Teks di tengah */
+    border: 1px solid  #040143; /* Border sedikit lebih gelap */
+    transition: background-color 0.3s ease; /* Transisi untuk hover */
+    font-weight: bold; /* Teks tebal */
+}
+
+.button-link:hover {
+    background-color: #2e28a4; /* Warna latar belakang saat di-hover */
+}

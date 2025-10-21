@@ -1,0 +1,86 @@
+/* Header memenuhi kanan dan kiri bagian atas */
+header {
+    display: flex; /* Menggunakan flexbox untuk mengatur posisi elemen di dalam header */
+    justify-content: space-between; /* Menyusun elemen dengan jarak maksimum antara kiri dan kanan */
+    align-items: center; /* Memastikan elemen berada di tengah secara vertikal */
+    padding: 10px 15px; /* Memberikan ruang di dalam header */
+    background-color: #040143; /* Warna latar belakang header */
+    color: white; /* Warna teks pada header */
+    width: 100%; /* Memastikan header memenuhi lebar penuh */
+    height: 70px; /*Tinggi header*/
+    position: fixed; /* Membuat header tetap di atas saat scrolling */
+    top: 0; /* Menempel di bagian atas halaman */
+    left: 0; /* Memastikan menempel ke kiri */
+    transition: top 0.3s; /*transisi muncul header saat scroll*/
+    z-index: 1000; /* Memberikan prioritas tampilan agar tidak tertutup elemen lain */
+}
+
+/* Gaya untuk logo */
+.logo img {
+    height: 50px; /* Menetapkan tinggi gambar logo */
+    width: auto; /* Mengatur lebar gambar logo */
+    margin-right: 10px; /* Memberikan jarak antara logo dan teks */
+}
+
+/* Informasi kontak */
+.contact-info p {
+    margin: 0; /* Menghapus margin default untuk menghindari celah ekstra */
+}
+
+/* Navigasi */
+nav {
+    background-color: #232d5e; /* Warna latar belakang navbar */
+    padding: 0.5px 0.5px; /* Memberikan ruang atas dan bawah */
+    width: 100%; /* Memastikan navbar memenuhi lebar penuh */
+    height: 30px; /* tinggi nav */
+    position: fixed; /* Membuat navbar tetap berada di atas saat scrolling */
+    z-index: 999; /* Memastikan navbar berada di atas elemen lain */
+    left: 0; /* Navbar menempel ke kiri */
+    right: 0; /* Navbar menempel ke kanan */
+    top: 70px; /* posisi default di bawah header */
+    transition: top 0.3s; /* transisi muncul header saat scroll */
+}
+
+nav ul {
+    list-style: none; /* Menghapus tanda bullet pada daftar menu */
+    display: flex; /* Menggunakan flexbox untuk menyusun item menu */
+    justify-content: center; /* Pusatkan menu secara horizontal */
+    padding: 0; /* Menghapus padding bawaan */
+    margin: 0; /* Menghapus margin bawaan */
+    height: 100%;/* Biar link bisa di center vertikal */
+    align-items: center;
+}
+
+nav ul li {
+    margin: 0 20px; /* Memberikan jarak antar item menu */
+}
+
+nav ul li a {
+    color: white; /* Warna teks menu */
+    text-decoration: none; /* Menghapus garis bawah default pada link */
+}
+
+/* Footer */
+footer {
+    display: flex;
+    height: 30px; /* Menetapkan tinggi footer */
+    background-color: #040143; /* Warna latar belakang footer */
+    color: white; /* Warna teks dalam footer */
+    text-align: center; /* Pusatkan teks dalam footer */
+    width: 100%; /* Memastikan footer memenuhi lebar penuh viewport */
+    height: 30px; /* tinggi nav */
+    bottom: 0; /* Menempel di bagian bawah halaman */
+    left: 0; /* Menempel ke kiri */
+    right: 0; /* Menempel ke kanan */
+    z-index: 1000; /* Pastikan footer tetap di atas elemen lainnya */
+    position: fixed; /* atau gunakan absolute jika ingin menyesuaikan kontainer */
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Gaya teks pada footer */
+footer h1 {
+    font-size: 10px; /* Ukuran teks di footer */
+    margin: 10px 0; /* Menghapus margin default */
+}
