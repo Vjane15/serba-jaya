@@ -35,8 +35,9 @@ body {
   padding: 30px; /* Ruang dalam kartu */
   border-radius: 8px; /* Sudut membulat */
   box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Bayangan lembut */
-  width: 100%; /* Penuh lebar container */
+  width: 90%; /* Penuh lebar container */
   max-width: 800px; /* Batas maksimal lebar kartu */
+  margin: 0 10px; /* Tambahkan margin horizontal agar tidak menempel tepi layar */
 }
 
 /* Header dalam card (judul section) */
@@ -55,6 +56,7 @@ body {
   display: flex; /* Layout horizontal */
   align-items: center; /* Vertikal sejajar */
   margin-bottom: 15px; /* Spasi antar grup */
+  margin-top: 20px;
 }
 
 /* Label tiap input */
@@ -62,11 +64,13 @@ body {
   flex: 1; /* Ambil 1 bagian dari 3 (1:2 rasio dengan select) */
   margin-right: 15px; /* Jarak kanan label */
   font-weight: bold; /* Teks label ditebalkan */
+  min-width: 100px; /* min-width agar label tidak terlalu menyusut */
 }
 
 /* Drop-down / select */
 .form-group select {
   flex: 2; /* Ambil 2 bagian dari 3 */
+  width: 100%; /* Pastikan select mengisi ruang yang diberikan flex */
   padding: 10px; /* Padding dalam select */
   border: 1px solid #ddd; /* Border abu muda */
   border-radius: 4px; /* Sudut membulat */
@@ -144,4 +148,43 @@ body {
 
 .button-link:hover {
     background-color: #2e28a4; /* Warna latar belakang saat di-hover */
+}
+
+@media (max-width: 600px) {
+    .card {
+        padding: 20px; /* Kurangi padding card di layar kecil */
+    }
+    
+    .card-header {
+        /* Sesuaikan offset agar tetap rapi di mobile */
+        margin-top: -20px; 
+        margin-left: -20px;
+        margin-right: -20px;
+        font-size: 18px;
+    }
+
+    /* TATA LETAK FORM UNTUK MOBILE */
+    .form-group {
+        flex-direction: column; /* Ubah label dan select menjadi tumpukan vertikal */
+        align-items: flex-start; /* Sejajarkan ke kiri */
+    }
+
+    .form-group label {
+        flex: unset; /* Hapus aturan flex */
+        width: 100%; /* Label mengambil lebar penuh */
+        margin-bottom: 5px; /* Tambahkan sedikit spasi di bawah label */
+        margin-right: 0; /* Hapus margin kanan */
+        min-width: unset; /* Hapus min-width */
+    }
+
+    .form-group select {
+        flex: unset; /* Hapus aturan flex */
+        width: 100%; /* Select mengambil lebar penuh dari container card */
+    }
+
+    /* Penyesuaian padding body agar lebih baik di mobile */
+    body {
+        padding-top: 100px;
+        padding-bottom: 20px;
+    }
 }
