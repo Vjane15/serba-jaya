@@ -8,11 +8,11 @@
 
 /* Pastikan seluruh halaman tidak memiliki celah */
 body {
-    width: 100vw; /* Memastikan halaman memenuhi lebar penuh */
+    width: 100%; /* Memastikan halaman memenuhi lebar penuh */
     min-height: 100vh; /* Memastikan tinggi sesuai viewport */
     background: #f5f7fa; /* Warna latar belakang halaman */
     color: #333; /* Warna teks utama */
-    padding: 20px;
+    padding: 0;
     display: flex; /* Menggunakan flexbox untuk tata letak */
     flex-direction: column; /* Susun elemen dalam bentuk kolom */
     align-items: center; /* Pusatkan elemen secara horizontal */
@@ -24,25 +24,26 @@ body {
     flex-direction: column; /* Susun elemen secara vertikal */
     justify-content: center; /* Pusatkan elemen secara vertikal */
     align-items: center; /* Pusatkan elemen secara horizontal */
-    width: 100vw; /* Pastikan background menempel ke kanan dan kiri */
-    min-height: 100vh; /* Pastikan tinggi sesuai viewport */
+    width: 100%; /* Pastikan background menempel ke kanan dan kiri */
+    min-height: 50vh; /* Pastikan tinggi sesuai viewport */
     background-image: url("bg halaman utama atas.jpg"); /* Menetapkan gambar latar */
     background-size: cover; /* Gambar memenuhi area tanpa distorsi */
     background-repeat: no-repeat; /* Hindari pengulangan gambar */
     background-position: center; /* Pusatkan gambar latar */
     color: white; /* Warna teks agar terlihat jelas */
     text-align: center; /* Pusatkan teks */
+    padding: 20px;/* Tambahkan padding agar teks tidak menempel tepi */
 }
 
 /* Gaya untuk judul utama */
 .atas h1 {
-    font-size: 36px; /* Ukuran font judul */
+    font-size: 28px; /* Ukuran font judul */
     margin: 10px 0; /* Hapus margin ekstra */
 }
 
 /* Gaya untuk paragraf utama */
 .atas p {
-    font-size: 18px; /* Ukuran font paragraf */
+    font-size: 16px; /* Ukuran font paragraf */
     margin: 10px 0; /* Hapus margin ekstra */
 }
 
@@ -50,24 +51,25 @@ body {
 main {
     flex-grow: 1; /* Memastikan konten utama mengisi ruang yang tersisa */
     width: 100vw; /* Pastikan konten memenuhi seluruh lebar layar */
-    background-color: #d3d3d3; /* Warna latar belakang abu-abu */
+    padding: 20px 0; /* Tambahkan padding vertikal */
 }
 
 /* Gaya untuk judul daftar mobil */
 .carlist h1 {
-    padding-top: 20px; /* Tambahkan jarak atas */
+    padding-top: 10px; /* Tambahkan jarak atas */
     text-align: center; /* Pusatkan teks */
-    font-size: 36px; /* Ukuran font untuk judul */
+    font-size: 28px; /* Ukuran font untuk judul */
     color: #333; /* Warna teks lebih gelap */
-    margin-bottom: 20px; /* Beri jarak bawah */
+    margin-bottom: 15px; /* Beri jarak bawah */
 }
 
 /* Barisan mobil */
 .line1, .line2 {
     display: flex; /* Gunakan flexbox */
+    flex-wrap: wrap; /* Mengizinkan mobil turun baris jika tidak muat */
     justify-content: center; /* Pusatkan elemen */
-    gap: 30px; /* Berikan jarak antar mobil */
-    padding: 20px; /* Tambahkan ruang di sekitar */
+    gap: 15px; /* Berikan jarak antar mobil */
+    padding: 10px; /* Tambahkan ruang di sekitar */
 }
 
 /* Gaya untuk mobil */
@@ -76,8 +78,17 @@ main {
     border: 1px solid #ccc; /* Tambahkan garis batas */
     border-radius: 8px; /* Sudut melengkung */
     padding: 10px; /* Tambahkan ruang dalam */
-    width: 200px; /* Tetapkan lebar */
+    width: 45%; /* Tetapkan lebar */
+    max-width: 250px;
     text-align: center; /* Pusatkan teks */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+/* Efek interaktif saat di-hover/di-tap */
+.car:hover {
+    transform: translateY(-5px); /* Geser ke atas sedikit saat disentuh/hover */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
 /* Gaya untuk gambar mobil */
@@ -91,10 +102,42 @@ main {
 /* Gaya untuk teks mobil */
 .car p {
     margin: 10px 0 0; /* Tambahkan sedikit ruang di atas */
-    font-size: 16px; /* Ukuran teks */
-    color: #333; /* Warna teks */
-    background-color: #78a7cd; /* Warna latar belakang untuk teks */
-    padding: 5px 10px; /* Tambahkan ruang dalam teks */
+    font-size: 14px; /* Ukuran teks */
+    color: white; /* Warna teks */
+    background-color: #040143; /* Warna latar belakang untuk teks */
+    padding: 8px 10px; /* Tambahkan ruang dalam teks */
     border-radius: 5px; /* Buat sudut teks melengkung */
     text-align: center; /* Pastikan teks berada di tengah */
+    font-weight: bold; /* Tambahkan ketebalan */
+}
+
+@media (min-width: 600px) {
+    body {
+        padding: 20px; /* Tambahkan kembali padding standar desktop */
+    }
+    
+    .atas {
+        min-height: 100vh; /* Kembalikan tinggi penuh untuk desktop */
+    }
+
+    .atas h1 {
+        font-size: 36px; /* Kembalikan ukuran font besar */
+    }
+
+    .atas p {
+        font-size: 18px;
+    }
+
+    .carlist h1 {
+        font-size: 36px;
+    }
+
+    .line1, .line2 {
+        gap: 30px; /* Kembalikan jarak antar mobil yang lebih besar */
+        padding: 20px;
+    }
+
+    .car {
+        width: 200px; /* Tetapkan lebar tetap untuk tampilan desktop yang rapi */
+    }
 }
