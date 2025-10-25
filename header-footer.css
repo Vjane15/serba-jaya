@@ -25,13 +25,12 @@ header {
 /* Informasi kontak */
 .contact-info p {
     margin: 0; /* Menghapus margin default untuk menghindari celah ekstra */
-    font-size: 14px; /* Ukuran font standar */    
 }
 
 /* Navigasi */
 nav {
     background-color: #232d5e; /* Warna latar belakang navbar */
-    padding: 0; 
+    padding: 0.5px 0.5px; /* Memberikan ruang atas dan bawah */
     width: 100%; /* Memastikan navbar memenuhi lebar penuh */
     height: 30px; /* tinggi nav */
     position: fixed; /* Membuat navbar tetap berada di atas saat scrolling */
@@ -53,19 +52,12 @@ nav ul {
 }
 
 nav ul li {
-    margin: 0 15px; /* Memberikan jarak antar item menu */
+    margin: 0 20px; /* Memberikan jarak antar item menu */
 }
 
 nav ul li a {
     color: white; /* Warna teks menu */
     text-decoration: none; /* Menghapus garis bawah default pada link */
-    padding: 5px 0;/* Tambahkan padding vertikal untuk area klik yang lebih besar */
-    display: block;
-    transition: opacity 0.3s;
-}
-
-nav ul li a:hover {
-    opacity: 0.8; /* Efek hover sederhana */
 }
 
 /* Footer */
@@ -76,6 +68,7 @@ footer {
     color: white; /* Warna teks dalam footer */
     text-align: center; /* Pusatkan teks dalam footer */
     width: 100%; /* Memastikan footer memenuhi lebar penuh viewport */
+    height: 30px; /* tinggi nav */
     bottom: 0; /* Menempel di bagian bawah halaman */
     left: 0; /* Menempel ke kiri */
     right: 0; /* Menempel ke kanan */
@@ -88,55 +81,6 @@ footer {
 
 /* Gaya teks pada footer */
 footer h1 {
-    font-size: 12px; /* Ukuran teks di footer */
+    font-size: 10px; /* Ukuran teks di footer */
     margin: 10px 0; /* Menghapus margin default */
-    font-weight: normal;
-}
-
-@media (max-width: 768px) {
-    /* HEADER: Penyesuaian agar tidak terlalu penuh */
-    header {
-        height: 60px; /* Kurangi tinggi header */
-        padding: 5px 10px;
-        /* Ubah layout untuk menyusun logo di kiri dan nav di bawahnya (secara visual) */
-    }
-    
-    .logo img {
-        height: 45px; /* Kurangi ukuran logo */
-    }
-
-    /* Sembunyikan informasi kontak yang memakan banyak tempat di mobile */
-    .contact-info {
-        display: none;
-    }
-
-    /* NAV: Penyesuaian agar menempel rapat di bawah header yang lebih kecil */
-    nav {
-        top: 60px; /* Posisikan di bawah header baru (60px) */
-        height: 40px; /* Tambahkan sedikit tinggi nav untuk memudahkan klik */
-        padding: 5px 0;
-    }
-
-    nav ul {
-        justify-content: space-around; /* Lebih baik menyebar di mobile daripada hanya di tengah */
-    }
-    
-    nav ul li {
-        margin: 0 5px; /* Kurangi jarak antar menu lebih banyak */
-    }
-
-    nav ul li a {
-        font-size: 14px; /* Kecilkan ukuran font menu */
-    }
-
-    /* FOOTER: Pastikan teks tetap terbaca */
-    footer h1 {
-        font-size: 10px; /* Pertahankan atau sedikit kurangi ukuran font footer */
-    }
-
-    /* Pastikan header dan nav mengisi penuh lebar */
-    header, nav, footer {
-        left: 0;
-        right: 0;
-    }
 }
