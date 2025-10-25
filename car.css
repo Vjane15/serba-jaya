@@ -12,7 +12,6 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
-    line-height: 1.6;
     padding-top: calc(70px + 40px); /* header 70px + nav 50px */
 }
 
@@ -118,4 +117,5 @@ body {
         width: 90%; /* Lebar thumbnail menjadi 90% dari parent */
         margin-bottom: 10px; /* Margin bawah 10px antar thumbnail */
     }
+
 }
